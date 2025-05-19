@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "掌上博物馆子系统"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "掌上博物馆子系统"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "掌上博物馆"
+    },
+    {
+      "name": "permission_reason_camera",
+      "value": "Used for scanning barcodes"
+    },
+    {
+      "name": "permission_reason_IMG",
+      "value": "用于获取图库信息"
+    }
+  ]
+}
