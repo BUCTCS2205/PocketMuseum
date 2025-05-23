@@ -74,23 +74,11 @@ struct RegisterPage {
 
   build() {
     Column() {
-      // 顶部图标
-      Row() {
-        Image('common/images/icon/huawei.png')
-          .width(100)
-          .height(100)
-          .align(Alignment.Center)
-      }
-      .width("100%")
-      .height(120)
-      .alignItems(VerticalAlign.Center)
-      .justifyContent(FlexAlign.Center)
-
       // 页面标题
       Text("注册账号")
-        .textAlign(TextAlign.Center)
         .fontSize(26)
         .fontFamily("SerifBold")
+        .margin({ top: 120 })
 
       // 提示语
       Text("填写信息以创建新账号")

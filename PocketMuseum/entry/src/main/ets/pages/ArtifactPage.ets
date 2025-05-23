@@ -427,8 +427,10 @@ struct ArtifactPage {
           }
 
           Row() {
-            TextInput({ placeholder: "善语结善缘，恶语伤人心" })
-              .type(InputType.Normal)
+            TextInput({
+              placeholder: "善语结善缘，恶语伤人心",
+              text: $$this.commentText
+            }).type(InputType.Normal)
               .placeholderColor($r('app.color.placeholder_color'))
               .width("75%")
               .height(40)
@@ -438,9 +440,6 @@ struct ArtifactPage {
               .backgroundColor("#F1F3F5")
               .padding({ left: 20 })
               .alignSelf(ItemAlign.Start)
-              .onChange((value: string) => {
-                this.commentText = value;
-              })
 
             Blank()
               .width("5%")
@@ -480,7 +479,6 @@ struct ArtifactPage {
       this.description = this.formatDescription(this.artifact.description);
       this.comments = await getCommentsByArtifactId(this.artifact.id);
       this.commentLabel = `评论(${this.comments.length})`;
-      this.commentText = "";
 
       const result = await this.tryGetLoves();
       if (!result.success) {

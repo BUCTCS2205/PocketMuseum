@@ -4,6 +4,7 @@ import JsonUser from "../model/JsonUser";
 import { Params } from "../pages/ArtifactPage";
 import { PhotoClass } from "../utilities/PhotoClass";
 import JsonArtifact from "../model/JsonArtifact";
+import promptAction from "@ohos.promptAction";
 
 @Component
 export default struct HomeView {
@@ -145,6 +146,12 @@ export default struct HomeView {
             }
             else if (picPath.includes("test_22")) {
               artifact = await getArtifactById(22);
+            }
+            else {
+              promptAction.showToast({
+                message: "未找到匹配项",
+                duration: 2000
+              });
             }
             if (artifact) {
               const params: Params = {
