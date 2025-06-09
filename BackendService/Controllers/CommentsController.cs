@@ -40,7 +40,7 @@ public class CommentsController : ControllerBase
     [HttpGet("artifact/{id:int}")]
     public async Task<IActionResult> GetByArtifactId(int id)
     {
-        var comments = await _db.Comments.Where(c => c.ArtifactId == id)
+        var comments = await _db.Comments.Where(c => c.ArtifactId == id && c.Passed)
                                          .ToListAsync();
         return Ok(comments);
     }
@@ -49,7 +49,7 @@ public class CommentsController : ControllerBase
     [HttpGet("mobile_user/{id:int}")]
     public async Task<IActionResult> GetByMobileUserId(int id)
     {
-        var comments = await _db.Comments.Where(c => c.UserId == id)
+        var comments = await _db.Comments.Where(c => c.UserId == id && c.Passed)
                                          .ToListAsync();
         return Ok(comments);
     }

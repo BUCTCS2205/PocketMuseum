@@ -6,4 +6,5 @@ export default interface JsonUser {
   avatar: string | null;
   registrationTime: string;
   lastLogin: string | null;
+  status: string;
 }

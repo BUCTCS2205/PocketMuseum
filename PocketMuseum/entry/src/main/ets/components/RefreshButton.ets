@@ -1,6 +1,6 @@
 @Reusable
 @Component
-export default struct BackButton {
+export default struct RefreshButton {
   @State
   isButtonPress: boolean = false;
 
@@ -11,16 +11,15 @@ export default struct BackButton {
         justifyContent: FlexAlign.Center,
         alignItems: ItemAlign.Center
       }) {
-          SymbolGlyph($r('sys.symbol.chevron_left'))
-            .fontSize(30)
+          Image($r("app.media.refresh"))
+            .height(15)
+            .width(15)
             .offset({
               x: -1,
               y: 0,
             })
         }
       }
-    .height(44)
-    .width(44)
     .scale({
       centerX: "50%",
       centerY: "50%",
@@ -52,5 +51,7 @@ export default struct BackButton {
           delay: 50
         })
     )
+    .width(25)
+    .height(25)
   }
 }

@@ -63,7 +63,8 @@ struct RegisterPage {
         password: this.password,
         avatar: null,
         registrationTime: now,
-        lastLogin: now
+        lastLogin: now,
+        status: "正常"
       });
       return Result.success(null, "注册成功");
     }

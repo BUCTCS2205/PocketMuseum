@@ -12,6 +12,7 @@ import CommentItem from "../components/CommentItem";
 import JsonLove from "../model/JsonLove";
 import { createLove, deleteLove, getLovesByArtifactId } from "../services/LoveApi";
 import { addHistoryRecord } from "../services/BrowseHistory";
+import RefreshButton from "../components/RefreshButton";
 
 export interface Params {
   artifact: JsonArtifact;
@@ -56,7 +57,8 @@ struct ArtifactPage {
     password: "",
     avatar: "",
     registrationTime: "",
-    lastLogin: null
+    lastLogin: null,
+    status: "正常",
   };
 
   @State
@@ -138,11 +140,19 @@ struct ArtifactPage {
   }
 
   async tryCreateComment(): Promise<Result> {
+    const commentText = this.commentText.trim();
+    if (commentText.length < 1) {
+      return Result.fail(null, "评论不得为空");
+    }
+    if (commentText.length > 250) {
+      return Result.fail(null, "评论不得长于250字符");
+    }
+
     const comment: JsonComment = {
       id: 0,
       userId: this.user.id,
       artifactId: this.artifact.id,
-      text: this.commentText,
+      text: commentText,
       commentTime: dayjs(new Date()).format(),
       passed: true
     };
@@ -402,11 +412,39 @@ struct ArtifactPage {
             .margin({ top: 12.5 })
             .alignSelf(ItemAlign.Center)
 
-          Text(this.commentLabel)
-            .fontSize(18)
-            .fontFamily("SerifBold")
-            .margin({ top: 12.5 })
-            .alignSelf(ItemAlign.Start)
+          Row() {
+            Text(this.commentLabel)
+              .fontSize(18)
+              .fontFamily("SerifBold")
+              .alignSelf(ItemAlign.Start)
+
+            Blank()
+
+            RefreshButton()
+              .alignSelf(ItemAlign.End)
+              .onClick(async () => {
+                this.comments = await getCommentsByArtifactId(this.artifact.id);
+                this.commentLabel = `评论(${this.comments.length})`;
+
+                const result = await this.tryGetLoves();
+                if (!result.success) {
+                  promptAction.showToast({
+                    message: result.message,
+                    duration: 2000
+                  });
+                }
+                else {
+                  promptAction.showToast({
+                    message: "刷新成功",
+                    duration: 2000
+                  });
+                }
+              })
+          }
+          .width("100%")
+          .margin({ top: 12.5 })
+          .alignItems(VerticalAlign.Center)
+          .alignSelf(ItemAlign.Start)
 
           List({ space: 10 }) {
             ForEach(this.comments, (item: JsonComment) => {
@@ -428,7 +466,7 @@ struct ArtifactPage {
 
           Row() {
             TextInput({
-              placeholder: "善语结善缘，恶语伤人心",
+              placeholder: this.user.status == "正常" ? "善语结善缘，恶语伤人心" : "您已被禁言",
               text: $$this.commentText
             }).type(InputType.Normal)
               .placeholderColor($r('app.color.placeholder_color'))
@@ -440,6 +478,7 @@ struct ArtifactPage {
               .backgroundColor("#F1F3F5")
               .padding({ left: 20 })
               .alignSelf(ItemAlign.Start)
+              .enabled(this.user.status == "正常")
 
             Blank()
               .width("5%")
@@ -450,6 +489,7 @@ struct ArtifactPage {
               .fontSize(15)
               .fontFamily("SerifBold")
               .alignSelf(ItemAlign.End)
+              .enabled(this.user.status == "正常")
               .onClick(async () => {
                 const result = await this.tryCreateComment();
                 promptAction.showToast({

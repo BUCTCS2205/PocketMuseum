@@ -32,4 +32,8 @@ public class MobileUser
 
     [Column("last_login")]
     public DateTime? LastLogin { get; set; }
+
+    [Column("status")]
+    [MaxLength(20)]
+    public string Status { get; set; } = string.Empty;
 }
